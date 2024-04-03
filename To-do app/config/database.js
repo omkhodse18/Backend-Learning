@@ -13,4 +13,5 @@ const dbConnect = () => {
     })
 }
 
+// Backend syntax for export
 module.exports = dbConnect;
