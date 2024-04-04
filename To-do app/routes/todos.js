@@ -15,5 +15,7 @@ router.get('/getTodos', getTodos)
 // Get by ID
 router.get('/getTodos/:id', getTodosById);
 
+// Update by ID
+router.put('/updateTodo/:id', updateTodo);
 
 module.exports = router;
