@@ -5,6 +5,7 @@ const router = express.Router();
 const {createTodo} = require("../controllers/createTodo");
 const {getTodos, getTodosById} = require("../controllers/getTodos");
 const {updateTodo} = require("../controllers/updateTodo");
+const {deleteTodo} = require("../controllers/deleteTodo");
 
 // Defining API routes
 router.post("/createTodo", createTodo);
@@ -17,5 +18,8 @@ router.get('/getTodos/:id', getTodosById);
 
 // Update by ID
 router.put('/updateTodo/:id', updateTodo);
+
+//Delete by ID
+router.delete('/deleteTodo/:id', deleteTodo);
 
 module.exports = router;
