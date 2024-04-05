@@ -50,7 +50,7 @@ exports.unlikePost = async(req,res) =>{
     try {
         const {post, like} = req.body;
         // Delete like from the likes array
-        const deleteLike = await Like.findByIdAndDelete({post:post,_id:like});
+        const deleteLike = await Like.findByIdAndDelete({_id:like});
 
         // we have remove the like so update it in post collection also
         const updatedPost = await Post.findByIdAndUpdate(post,{$pull : {likes: deleteLike.id}}, {new:true});
