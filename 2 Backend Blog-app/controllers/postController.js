@@ -20,3 +20,18 @@ exports.createPost = async(req,res) => {
         })
     }
 }
+
+exports.getAllPosts = async(req, res) =>{
+    try {
+        const posts = await Post.find();
+        
+        res.json({
+            post : posts,
+        });
+    } 
+    catch (error) {
+        return res.status(500).json({
+            error : "Error occured " + error
+        })
+    }
+}
