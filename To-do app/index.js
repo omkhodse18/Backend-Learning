@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 // Load config from env file
-require("dotenv").config();
+require("dotenv").config(); // It loads the configuration present in .env files to PROCESS object 
 
 // Ya to port no process.env se aayega || if any reason nahi aaya to default 4000 or any will be used
 const PORT = process.env.PORT || 4000;
@@ -13,7 +13,7 @@ app.use(express.json());
 // Import routes for todo API
 const todoRoutes = require("./routes/todos");
 
-// Mounting(Adding/Apendng) the todo API routes
+// Mounting(Adding/Apendng) the todo API routes || Base url ke sath /api/v1 mapping kiya hain
 app.use("/api/v1", todoRoutes);
 
 // starting server

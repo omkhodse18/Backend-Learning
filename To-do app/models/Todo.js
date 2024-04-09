@@ -30,4 +30,5 @@ const todoSchema = new mongoose.Schema(
 )
 
 // Export syntax of mongoose schema 
+//                             ("NAME",scheme);
 module.exports = mongoose.model("Todo", todoSchema);
