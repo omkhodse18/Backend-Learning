@@ -1,5 +1,5 @@
 {
-  "name": "to-do-app",
+  "name": "3-login-signup",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,14 +7,13 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "type":"module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.2.4",
+    "expres": "^0.0.5",
+    "mongoose": "^8.3.1",
     "nodemon": "^3.1.0"
   }
 }
