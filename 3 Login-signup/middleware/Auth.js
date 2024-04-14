@@ -3,7 +3,7 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
-exports.auth = (req, res) => {
+exports.auth = (req, res, next) => {
     try {
         // Extract jwt token
         const token = req.body.token; 
@@ -18,10 +18,10 @@ exports.auth = (req, res) => {
         
         // token verification
         try {
-            const payload = jwt.verify(token, process.env.JWT_SECRET);
-            console.log(payload);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            console.log(decoded);
 
-            req.user = payload;
+            req.user = decoded; // To verify is it student or admin based on role in future
 
         } catch (error) {
             return res.status(401).json({
@@ -31,6 +31,7 @@ exports.auth = (req, res) => {
         }
         
         next();
+
     } catch (error) {
         return res.status(401).json({
             success:false,
@@ -39,7 +40,7 @@ exports.auth = (req, res) => {
     }
 }
 
-exports.isStuden = (req, res, next) => {
+exports.isStudent = (req, res, next) => {
     try {
         if(req.user.role !== "Student"){
             return res.status(401).json({
@@ -49,6 +50,7 @@ exports.isStuden = (req, res, next) => {
         }
 
         next();
+
     } catch (error) {
         return res.status(500).json({
             success:false,
@@ -67,6 +69,7 @@ exports.isAdmin = (req, res, next) => {
         }
 
         next();
+        
     } catch (error) {
         return res.status(500).json({
             success:false,

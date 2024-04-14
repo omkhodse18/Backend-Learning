@@ -70,6 +70,7 @@ exports.login = async(req, res) => {
 
         // Checking if user entry is in database
         let user = await User.findOne({email});
+
         //If not a registered user
         if(!user){
             return res.status(401).json({
