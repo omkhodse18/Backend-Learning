@@ -45,8 +45,23 @@ To resolve this issue, make sure that you're properly handling video files in yo
 
 
 // or 
-async function uploadFileToCloudinary(file, folder){
+
+// image size also reduce by decreasing width and height size
+async function uploadFileToCloudinary(file, folder, quality){
     const options = {folder, resource_type:"auto"};
+
+    if (quality !== undefined && quality >= 0 && quality <= 100) {
+        options.quality = quality;
+    }
+
+    // if(height !== undefined){
+    //     options.height = height;
+    // }
+
+    // if(width !== undefined){
+    //     options.width = width
+    // }
+
     return await cloudinary.uploader.upload(file.tempFilePath, options);
 }
 
@@ -134,6 +149,53 @@ exports.videoUpload = async(req,res) => {
         res.status(400).json({
             success:false,
             message:"Something went wrong"
+        })
+    }
+}
+
+exports.imageSizeReducer = async(req,res) => {
+    try {
+        const {name, tags, email} = req.body;
+        console.log(name, tags, email);
+
+        const file = req.files.imageFile;
+
+        //Validation
+        const supportedTypes = ["jpg", "jpeg", "png"];
+        
+        const fileFormat = file.name.split('.')[1].toLowerCase();
+        
+        // File format not supported
+        if(!supportedTypes.includes(fileFormat)){
+            return res.status(400).json({
+                success:false,
+                message: "File format not supported"
+            })
+        }
+        
+        // upload on cloudinary
+                                                                   //    quality         
+        const response = await uploadFileToCloudinary(file, "Demo-Folder", 40);
+        console.log(response);
+     
+        // Create entry in database
+        const fileData = await File.create({
+            name, tags, email, imageUrl:response.secure_url
+        })
+
+        res.json({
+            success:true,
+            message:"Image uploaded successfully"
+        })
+
+
+    } catch (error) {
+        console.log("Error - During reducing size of image");
+        console.log(error);
+
+        res.status(400).json({
+            success:false,
+            message:"Something went wrong while reducing size"
         })
     }
 }
