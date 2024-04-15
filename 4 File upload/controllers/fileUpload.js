@@ -27,9 +27,26 @@ exports.localFileUpload = async(req, res) => {
         console.log(error);
     }
 }
-
+/*
 async function uploadFileToCloudinary(file, folder){
     const options = {folder};
+    return await cloudinary.uploader.upload(file.tempFilePath, options);
+}
+
+The error message , "Invalid image file", suggests that Cloudinary is expecting an image file but is instead receiving a video file. This happens because Cloudinary automatically detects the file type based on its contents, and if it detects a video file but receives an image file, it throws an error.
+
+To resolve this issue, make sure that you're properly handling video files in your uploadFileToCloudinary function. So, mention resourceType = auto
+*/
+
+// async function uploadFileToCloudinary(file, folder, resourceType = "auto"){
+//     const options = {folder, resource_type: resourceType};
+//     return await cloudinary.uploader.upload(file.tempFilePath, options);
+// }
+
+
+// or 
+async function uploadFileToCloudinary(file, folder){
+    const options = {folder, resource_type:"auto"};
     return await cloudinary.uploader.upload(file.tempFilePath, options);
 }
 
@@ -56,7 +73,7 @@ exports.imageUpload = async(req, res) => {
         
         // upload on cloudinary
     
-        const response = await uploadFileToCloudinary(file, "Demo-Folder");
+        const response = await uploadFileToCloudinary(file, "Demo-Folder", "image");
         console.log(response);
      
         // Create entry in database
@@ -70,6 +87,48 @@ exports.imageUpload = async(req, res) => {
         })
 
     } catch (error) {
+        console.log(error);
+
+        res.status(400).json({
+            success:false,
+            message:"Something went wrong"
+        })
+    }
+}
+
+exports.videoUpload = async(req,res) => {
+    try {
+        const {name, tags, email} = req.body;
+        console.log(name, tags, email);
+
+        const file = req.files.videoFile;
+
+        const supportedTypes = ['mp4','mkv','mov']; 
+
+        const fileFormat = file.name.split('.')[1].toLowerCase();
+        
+        // File format not supported
+        if(!supportedTypes.includes(fileFormat)){
+            return res.status(400).json({
+                success:false,
+                message: "File format not supported"
+            })
+        }
+
+        const response = await uploadFileToCloudinary(file, "Demo-Folder", "video");
+        console.log(response);
+
+        const fileData = await File.create({
+            name, tags, email, imageUrl:response.secure_url
+        })
+
+        res.json({
+            success:true,
+            message:"Video uploaded successfully"
+        })
+
+    } catch (error) {
+        console.log("Error - During uploading video");
         console.log(error);
 
         res.status(400).json({
