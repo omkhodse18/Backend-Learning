@@ -7,5 +7,6 @@ const {imageUpload, videoUpload, imgReducerUpload, localFileUpload} = require('.
 
 // API route
 router.post('/localFileUpload', localFileUpload); 
+router.post('/imageUpload', imageUpload); 
 
 module.exports = router;
