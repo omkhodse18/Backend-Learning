@@ -7,12 +7,12 @@ exports.localFileUpload = async(req, res) => {
         const file = req.files.file;
         console.log("FILE -> ", file);
 
-        // Path of server to store the file
-        // varName = curr_dir + files + curr-date + extension
+        // Create path where file need to be stored on server
+        // varName = curr_directory + files + curr-date + extension
         let path = __dirname + "/files/" + Date.now() + `.${file.name.split('.')[1]}`;
         console.log("PATH -> ", path);
 
-        // Move file to server
+        // Move file to server OR Add path to move function
         file.mv(path, (err)=>{
             console.log(err);
         });
